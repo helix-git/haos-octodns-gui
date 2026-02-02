@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/helix-git/haos-octodns-gui/compare/v0.1.4...v0.2.0) (2026-02-02)
+
+
+### Features
+
+* Pre-install OctoDNS providers in Docker image ([b8ae12b](https://github.com/helix-git/haos-octodns-gui/commit/b8ae12b8fac8a26acb0600db21f9bae84c48bc8e))
+
 ## [0.1.4](https://github.com/helix-git/haos-octodns-gui/compare/v0.1.3...v0.1.4) (2026-02-02)
 
 
