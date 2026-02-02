@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/helix-git/haos-octodns-gui/compare/v0.2.0...v0.2.1) (2026-02-02)
+
+
+### Bug Fixes
+
+* Correct schema format for enabled_providers ([71a4e5a](https://github.com/helix-git/haos-octodns-gui/commit/71a4e5a80e30ea271be7096d216bf38a8b7a29e2))
+
 ## [0.2.0](https://github.com/helix-git/haos-octodns-gui/compare/v0.1.4...v0.2.0) (2026-02-02)
 
 
