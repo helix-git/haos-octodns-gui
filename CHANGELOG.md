@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/helix-git/haos-octodns-gui/compare/v0.1.3...v0.1.4) (2026-02-02)
+
+
+### Bug Fixes
+
+* Correct image name in build workflow ([39ff5a5](https://github.com/helix-git/haos-octodns-gui/commit/39ff5a5d47b10781a39fe9b90aa003be3a326c90))
+
 ## [0.1.3](https://github.com/helix-git/haos-octodns-gui/compare/v0.1.2...v0.1.3) (2026-02-02)
 
 
