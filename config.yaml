@@ -1,7 +1,7 @@
 ---
 name: "OctoDNS GUI"
 description: "Web-basierte GUI zur Verwaltung von DNS-Zonen mit OctoDNS"
-version: 0.1.0
+version: 0.1.1
 slug: "octodns-gui"
 image: "ghcr.io/helix-git/ha-octodns-gui/{arch}"
 init: false
