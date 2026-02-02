@@ -1,53 +1,56 @@
 {% extends "base.html" %}
 
-{% block title %}OctoDNS GUI - Zonen{% endblock %}
+{% block title %}OctoDNS GUI - Dashboard{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2>DNS Zonen</h2>
-        <a href="{{ url_for('new_zone') }}" class="btn">+ Neue Zone</a>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; font-weight: bold; color: var(--accent-color);">{{ stats.env_vars }}</div>
+        <div style="color: var(--secondary-text-color);">Secrets</div>
     </div>
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; font-weight: bold; color: var(--accent-color);">{{ stats.providers }}</div>
+        <div style="color: var(--secondary-text-color);">Provider</div>
+    </div>
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 32px; font-weight: bold; color: var(--accent-color);">{{ stats.zones }}</div>
+        <div style="color: var(--secondary-text-color);">Zonen</div>
+    </div>
+</div>
 
-    {% if zones %}
+<div class="card">
+    <h2>Schnellstart</h2>
+    <ol style="line-height: 2;">
+        <li><a href="{{ url_for('environment.index') }}">Secrets anlegen</a> (API-Tokens, Passwörter)</li>
+        <li>Provider konfigurieren (Source + Targets)</li>
+        <li>Zonen anlegen und Targets zuweisen</li>
+        <li>Sync ausführen</li>
+    </ol>
+</div>
+
+{% if stats.recent_jobs %}
+<div class="card">
+    <h2>Letzte Sync-Jobs</h2>
     <table>
         <thead>
             <tr>
-                <th>Zone</th>
-                <th>Records</th>
-                <th>Aktionen</th>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Typ</th>
+                <th>Erstellt</th>
             </tr>
         </thead>
         <tbody>
-            {% for zone in zones %}
+            {% for job in stats.recent_jobs %}
             <tr>
-                <td>
-                    <a href="{{ url_for('view_zone', zone_name=zone.name) }}">{{ zone.name }}</a>
-                    {% if zone.error %}
-                    <span style="color: var(--error-color); font-size: 12px;">(Fehler)</span>
-                    {% endif %}
-                </td>
-                <td>{{ zone.records }}</td>
-                <td>
-                    <a href="{{ url_for('view_zone', zone_name=zone.name) }}">Anzeigen</a> |
-                    <a href="{{ url_for('edit_zone', zone_name=zone.name) }}">Bearbeiten</a>
-                </td>
+                <td>#{{ job.id }}</td>
+                <td>{{ job.status }}</td>
+                <td>{{ job.trigger_type or '-' }}</td>
+                <td>{{ job.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p style="color: var(--secondary-text-color);">
-        Keine Zonen gefunden. Erstelle eine neue Zone oder lege YAML-Dateien im Verzeichnis
-        <code>{{ dns_provider or '/config/octodns' }}</code> ab.
-    </p>
-    {% endif %}
-</div>
-
-{% if dns_provider %}
-<div class="card">
-    <h2>Provider Konfiguration</h2>
-    <p>Konfigurierter Provider: <strong>{{ dns_provider }}</strong></p>
 </div>
 {% endif %}
 {% endblock %}

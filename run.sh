@@ -7,9 +7,24 @@ ZONE_FILE_PATH=$(bashio::config 'zone_file_path')
 
 # Log enabled providers
 bashio::log.info "Enabled providers:"
-for provider in $(bashio::config 'enabled_providers'); do
-    bashio::log.info "  - ${provider}"
-done
+if bashio::config.true 'providers.cloudflare'; then
+    bashio::log.info "  - cloudflare"
+fi
+if bashio::config.true 'providers.ovh'; then
+    bashio::log.info "  - ovh"
+fi
+if bashio::config.true 'providers.pihole'; then
+    bashio::log.info "  - pihole"
+fi
+if bashio::config.true 'providers.netbox_dns'; then
+    bashio::log.info "  - netbox_dns"
+fi
+if bashio::config.true 'providers.netbox'; then
+    bashio::log.info "  - netbox"
+fi
+if bashio::config.true 'providers.bind'; then
+    bashio::log.info "  - bind"
+fi
 
 bashio::log.info "Zone File Path: ${ZONE_FILE_PATH}"
 

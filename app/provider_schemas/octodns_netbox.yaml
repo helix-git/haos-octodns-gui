@@ -6,7 +6,6 @@ documentation: https://github.com/octodns/octodns-netbox
 
 package:
   name: octodns-netbox
-  version: '>=0.0.1' # Assuming a minimal version requirement
 
 fields:
   - name: url
@@ -24,31 +23,31 @@ fields:
     label: TTL
     type: number
     default: 60
-    description: The TTL of the generated records (Optional, default: 60)
+    description: The TTL of the generated records
   - name: populate_subdomains
     label: Populate Subdomains
     type: checkbox
     default: true
-    description: Generate records including subdomains (Optional, default: true)
+    description: Generate records including subdomains
   - name: field_name
     label: FQDN Field Name
     type: text
     default: description
-    description: The NetBox field name used to store FQDNs (e.g., 'description', 'dns_name')
+    description: The NetBox field name used to store FQDNs
   - name: populate_tags
     label: Populate Tags
     type: text
-    description: Comma-separated list of tags to filter IP addresses by.
+    description: Comma-separated list of tags to filter IP addresses by
   - name: populate_vrf_id
     label: Populate VRF ID
     type: number
-    description: VRF ID to filter IP addresses by. (0 for global VRF)
+    description: VRF ID to filter IP addresses by (0 for global VRF)
   - name: populate_vrf_name
     label: Populate VRF Name
     type: text
-    description: VRF Name to filter IP addresses by.
+    description: VRF Name to filter IP addresses by
   - name: multivalue_ptr
     label: Multi-value PTR records
     type: checkbox
     default: false
-    description: If true, multiple-valued PTR records will be generated.
+    description: If true, multiple-valued PTR records will be generated

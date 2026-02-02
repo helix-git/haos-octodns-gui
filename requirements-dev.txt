@@ -1,0 +1,8 @@
+# Development dependencies (includes all providers)
+-r app/requirements.txt
+octodns-cloudflare
+octodns-ovh
+octodns-netbox-dns
+octodns-netbox
+octodns-bind
+git+https://github.com/jvoss/octodns-pihole.git

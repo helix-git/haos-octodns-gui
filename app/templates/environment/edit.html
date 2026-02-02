@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ env_var.key }} bearbeiten - OctoDNS GUI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Variable bearbeiten: {{ env_var.key }}</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label>Key</label>
+            <input type="text" value="{{ env_var.key }}" disabled
+                   style="width: 100%; background: var(--divider-color);">
+        </div>
+
+        <div class="form-group">
+            <label for="value">Neuer Wert (wird verschlüsselt gespeichert)</label>
+            <input type="password" id="value" name="value" required
+                   placeholder="Neuen Wert eingeben"
+                   style="width: 100%;">
+        </div>
+
+        <p style="color: var(--secondary-text-color); font-size: 14px; margin-bottom: 16px;">
+            Der aktuelle Wert wird aus Sicherheitsgründen nicht angezeigt.
+        </p>
+
+        <div class="actions">
+            <button type="submit" class="btn">Speichern</button>
+            <a href="{{ url_for('environment.index') }}" class="btn btn-secondary">Abbrechen</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

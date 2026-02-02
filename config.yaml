@@ -17,11 +17,20 @@ homeassistant_config: true
 map:
   - config:rw
 options:
-  enabled_providers:
-    - netbox-dns
-    - pihole
+  providers:
+    cloudflare: false
+    ovh: false
+    pihole: true
+    netbox_dns: true
+    netbox: false
+    bind: false
   zone_file_path: /config/octodns
 schema:
-  enabled_providers:
-    - list(cloudflare|ovh|pihole|netbox-dns|netbox|bind)?
+  providers:
+    cloudflare: bool?
+    ovh: bool?
+    pihole: bool?
+    netbox_dns: bool?
+    netbox: bool?
+    bind: bool?
   zone_file_path: str

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Provider - OctoDNS GUI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2>Provider</h2>
+        <a href="{{ url_for('providers.create') }}" class="btn">Neuer Provider</a>
+    </div>
+
+    {% if providers %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Typ</th>
+                <th>Version</th>
+                <th>Rolle</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in providers %}
+            <tr>
+                <td>
+                    <strong>{{ item.provider.name }}</strong>
+                    {% if item.info and item.info.documentation %}
+                    <a href="{{ item.info.documentation }}" target="_blank"
+                       style="margin-left: 8px; font-size: 12px;" title="Dokumentation">&#8599;</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.info %}
+                        {{ item.info.name }}
+                    {% else %}
+                        <code>{{ item.provider.provider_type }}</code>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.version %}
+                        <span class="badge badge-secondary">v{{ item.version }}</span>
+                    {% else %}
+                        <span class="badge badge-warning">Nicht installiert</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.provider.is_source %}
+                        <span class="badge badge-info">Source</span>
+                    {% else %}
+                        <span class="badge badge-success">Target</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('providers.edit', id=item.provider.id) }}"
+                       class="btn btn-secondary btn-small">Bearbeiten</a>
+                    <form method="POST" action="{{ url_for('providers.delete', id=item.provider.id) }}"
+                          style="display: inline;"
+                          onsubmit="return confirm('Provider wirklich löschen?')">
+                        <button type="submit" class="btn btn-danger btn-small">Löschen</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--secondary-text-color);">Noch keine Provider konfiguriert.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Verfügbare Provider-Typen</h2>
+    <p style="color: var(--secondary-text-color); margin-bottom: 16px;">
+        Diese Provider sind in der Add-on-Konfiguration aktiviert und können verwendet werden.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
+        {% for info in available_types %}
+        <div style="padding: 12px; border: 1px solid var(--divider-color); border-radius: 4px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <strong>{{ info.name }}</strong>
+                {% if info.is_source %}
+                    <span class="badge badge-info">Source</span>
+                {% else %}
+                    <span class="badge badge-success">Target</span>
+                {% endif %}
+                {% if info.installed_version %}
+                    <span class="badge badge-secondary">v{{ info.installed_version }}</span>
+                {% endif %}
+            </div>
+            <div style="font-size: 12px; color: var(--secondary-text-color);">
+                {{ info.package_name }}
+                {% if info.documentation %}
+                <a href="{{ info.documentation }}" target="_blank" style="margin-left: 8px;">Docs &#8599;</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

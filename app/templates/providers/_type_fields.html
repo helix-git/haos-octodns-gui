@@ -1,0 +1,163 @@
+{% if type_info %}
+<div style="padding: 12px; background: rgba(3, 169, 244, 0.1); border-radius: 4px; margin-bottom: 16px;">
+    <strong>{{ type_info.name }}</strong>
+    {% if type_info.is_source %}
+        <span class="badge badge-info">Source</span>
+    {% else %}
+        <span class="badge badge-success">Target</span>
+    {% endif %}
+    {% if type_info.documentation %}
+        <a href="{{ type_info.documentation }}" target="_blank" style="margin-left: 8px; font-size: 12px;">
+            Dokumentation &#8599;
+        </a>
+    {% endif %}
+    {% if type_info.installed_version %}
+        <span class="badge badge-secondary" style="margin-left: 8px;">v{{ type_info.installed_version }}</span>
+    {% endif %}
+</div>
+
+{% for field in type_info.fields %}
+<div class="form-group">
+    {% if field.type == 'checkbox' %}
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox"
+                   id="config_{{ field.name }}"
+                   name="config_{{ field.name }}"
+                   {% if config.get(field.name, field.get('default', False)) %}checked{% endif %}>
+            {{ field.label }}
+        </label>
+        {% if field.description %}
+        <p style="font-size: 12px; color: var(--secondary-text-color); margin: 4px 0 0 24px;">
+            {{ field.description }}
+        </p>
+        {% endif %}
+
+    {% elif field.type == 'select' %}
+        <label for="config_{{ field.name }}">
+            {{ field.label }}
+            {% if field.required %}<span style="color: var(--error-color);">*</span>{% endif %}
+        </label>
+        <select id="config_{{ field.name }}"
+                name="config_{{ field.name }}"
+                style="width: 100%;"
+                {% if field.required %}required{% endif %}>
+            {% for option in field.options %}
+            <option value="{{ option }}"
+                    {% if config.get(field.name, field.get('default')) == option %}selected{% endif %}>
+                {{ option }}
+            </option>
+            {% endfor %}
+        </select>
+        {% if field.description %}
+        <p style="font-size: 12px; color: var(--secondary-text-color); margin-top: 4px;">
+            {{ field.description }}
+        </p>
+        {% endif %}
+
+    {% elif field.type == 'number' %}
+        <label for="config_{{ field.name }}">
+            {{ field.label }}
+            {% if field.required %}<span style="color: var(--error-color);">*</span>{% endif %}
+        </label>
+        <input type="number"
+               id="config_{{ field.name }}"
+               name="config_{{ field.name }}"
+               value="{{ config.get(field.name, field.get('default', '')) }}"
+               placeholder="{{ field.get('placeholder', '') }}"
+               style="width: 100%;"
+               {% if field.required %}required{% endif %}>
+        {% if field.description %}
+        <p style="font-size: 12px; color: var(--secondary-text-color); margin-top: 4px;">
+            {{ field.description }}
+        </p>
+        {% endif %}
+
+    {% elif field.env_ref %}
+        {# Fields that support env/ references - show dropdown + text input #}
+        <label for="config_{{ field.name }}">
+            {{ field.label }}
+            {% if field.required %}<span style="color: var(--error-color);">*</span>{% endif %}
+            <span style="font-size: 11px; color: var(--accent-color);" title="Kann Secret referenzieren">&#128274;</span>
+        </label>
+        <div class="input-group">
+            <select class="env-var-select"
+                    data-target="config_{{ field.name }}"
+                    style="width: 180px;">
+                <option value="">-- Manuell --</option>
+                {% for ev in env_vars %}
+                <option value="{{ ev.reference }}"
+                        {% if config.get(field.name) == ev.reference %}selected{% endif %}>
+                    {{ ev.key }}
+                </option>
+                {% endfor %}
+            </select>
+            <input type="{{ 'password' if field.type == 'password' else 'text' }}"
+                   id="config_{{ field.name }}"
+                   name="config_{{ field.name }}"
+                   value="{{ config.get(field.name, field.get('default', '')) }}"
+                   placeholder="{{ field.get('placeholder', '') }}"
+                   style="flex: 1;"
+                   {% if field.required %}required{% endif %}>
+        </div>
+        {% if field.description %}
+        <p style="font-size: 12px; color: var(--secondary-text-color); margin-top: 4px;">
+            {{ field.description }}
+        </p>
+        {% endif %}
+        <p style="font-size: 11px; color: var(--accent-color); margin-top: 2px;">
+            Wähle ein Secret aus oder gib direkt einen Wert ein.
+        </p>
+
+    {% else %}
+        {# Default text/password field #}
+        <label for="config_{{ field.name }}">
+            {{ field.label }}
+            {% if field.required %}<span style="color: var(--error-color);">*</span>{% endif %}
+        </label>
+        <input type="{{ 'password' if field.type == 'password' else 'text' }}"
+               id="config_{{ field.name }}"
+               name="config_{{ field.name }}"
+               value="{{ config.get(field.name, field.get('default', '')) }}"
+               placeholder="{{ field.get('placeholder', '') }}"
+               style="width: 100%;"
+               {% if field.required %}required{% endif %}>
+        {% if field.description %}
+        <p style="font-size: 12px; color: var(--secondary-text-color); margin-top: 4px;">
+            {{ field.description }}
+        </p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endfor %}
+
+<script>
+// Handle env var dropdown selection
+document.querySelectorAll('.env-var-select').forEach(function(select) {
+    select.addEventListener('change', function() {
+        var targetId = this.dataset.target;
+        var input = document.getElementById(targetId);
+        if (this.value) {
+            input.value = this.value;
+            input.setAttribute('readonly', true);
+            input.style.backgroundColor = 'var(--divider-color)';
+        } else {
+            input.removeAttribute('readonly');
+            input.style.backgroundColor = '';
+            input.value = '';
+        }
+    });
+
+    // Initialize on page load
+    if (select.value) {
+        var targetId = select.dataset.target;
+        var input = document.getElementById(targetId);
+        if (input && input.value.startsWith('env/')) {
+            input.setAttribute('readonly', true);
+            input.style.backgroundColor = 'var(--divider-color)';
+        }
+    }
+});
+</script>
+{% else %}
+<p style="color: var(--secondary-text-color);">Bitte wähle einen Provider-Typ aus.</p>
+{% endif %}

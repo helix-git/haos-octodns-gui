@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Neuer Provider - OctoDNS GUI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Neuer Provider</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" required
+                   placeholder="z.B. cloudflare-prod" style="width: 100%;">
+        </div>
+
+        <div class="form-group">
+            <label for="provider_type">Provider-Typ *</label>
+            <select id="provider_type" name="provider_type" required style="width: 100%;"
+                    hx-get="{{ url_for('providers.type_fields') }}"
+                    hx-trigger="change"
+                    hx-target="#fields-container"
+                    hx-swap="innerHTML">
+                <option value="">-- Bitte wählen --</option>
+                {% for info in provider_types %}
+                <option value="{{ info.class_name }}">
+                    {{ info.name }}
+                    {% if info.is_source %}(Source){% else %}(Target){% endif %}
+                    {% if info.installed_version %}- v{{ info.installed_version }}{% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="fields-container" style="margin-top: 16px;">
+            <p style="color: var(--secondary-text-color);">Bitte wähle einen Provider-Typ aus.</p>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn">Erstellen</button>
+            <a href="{{ url_for('providers.index') }}" class="btn btn-secondary">Abbrechen</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

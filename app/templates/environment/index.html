@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Secrets - OctoDNS GUI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2>Environment Variables (Secrets)</h2>
+        <a href="{{ url_for('environment.create') }}" class="btn">Neue Variable</a>
+    </div>
+
+    <p style="color: var(--secondary-text-color); margin-bottom: 16px;">
+        Hier werden API-Tokens und andere Secrets verschlüsselt gespeichert.
+        Referenziere sie in Provider-Konfigurationen mit <code>env/VARIABLE_NAME</code>.
+    </p>
+
+    {% if env_vars %}
+    <table>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Erstellt</th>
+                <th>Aktualisiert</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for env_var in env_vars %}
+            <tr>
+                <td><code>{{ env_var.key }}</code></td>
+                <td>{{ env_var.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>{{ env_var.updated_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>
+                    <a href="{{ url_for('environment.edit', id=env_var.id) }}">Bearbeiten</a>
+                    <form action="{{ url_for('environment.delete', id=env_var.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" onclick="return confirm('Wirklich löschen?')"
+                                style="background: none; border: none; color: var(--error-color); cursor: pointer;">
+                            Löschen
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--secondary-text-color);">Noch keine Secrets gespeichert.</p>
+    {% endif %}
+</div>
+{% endblock %}
