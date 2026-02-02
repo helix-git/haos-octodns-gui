@@ -104,7 +104,7 @@ jobs:
     if: ${{ needs.release-please.outputs.release_created }}
     steps:
       - name: Trigger submodule sync
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DISPATCH_TOKEN }}
           repository: ${{ github.repository_owner }}/haos-apps
