@@ -16,8 +16,16 @@ auth_api: true
 map:
   - config:rw
 options:
-  dns_provider: ""
+  enabled_providers:
+    - netbox-dns
+    - pihole
   zone_file_path: "/config/octodns"
 schema:
-  dns_provider: str
+  enabled_providers:
+    - cloudflare?
+    - ovh?
+    - pihole?
+    - netbox-dns?
+    - netbox?
+    - bind?
   zone_file_path: str

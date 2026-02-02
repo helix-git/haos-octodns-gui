@@ -1,0 +1,32 @@
+# BIND Zone File Provider Schema
+# https://github.com/octodns/octodns-bind
+
+name: BIND Zone File
+class: octodns_bind.ZoneFileProvider
+is_source: true
+documentation: https://github.com/octodns/octodns-bind
+
+package:
+  name: octodns-bind
+
+fields:
+  - name: directory
+    label: Zone Files Directory
+    type: text
+    required: true
+    placeholder: /etc/bind/zones
+    description: "Verzeichnis mit den Zone-Dateien"
+
+  - name: file_extension
+    label: File Extension
+    type: text
+    required: false
+    default: "."
+    description: "Dateiendung der Zone-Dateien"
+
+  - name: check_origin
+    label: Check Origin
+    type: checkbox
+    required: false
+    default: true
+    description: "Origin in Zone-Datei prüfen"

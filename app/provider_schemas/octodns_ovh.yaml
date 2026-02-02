@@ -1,0 +1,54 @@
+# OVH Provider Schema
+# https://github.com/octodns/octodns-ovh
+
+name: OVH
+class: octodns_ovh.OvhProvider
+is_source: false
+documentation: https://github.com/octodns/octodns-ovh
+
+package:
+  name: octodns-ovh
+
+fields:
+  - name: endpoint
+    label: API Endpoint
+    type: select
+    required: true
+    default: ovh-eu
+    options:
+      - ovh-eu
+      - ovh-ca
+      - ovh-us
+      - kimsufi-eu
+      - kimsufi-ca
+      - soyoustart-eu
+      - soyoustart-ca
+    description: "OVH API Endpoint Region"
+
+  - name: application_key
+    label: Application Key
+    type: password
+    required: true
+    env_ref: true
+    placeholder: env/OVH_APPLICATION_KEY
+
+  - name: application_secret
+    label: Application Secret
+    type: password
+    required: true
+    env_ref: true
+    placeholder: env/OVH_APPLICATION_SECRET
+
+  - name: consumer_key
+    label: Consumer Key
+    type: password
+    required: true
+    env_ref: true
+    placeholder: env/OVH_CONSUMER_KEY
+
+  - name: strict_supports
+    label: Strict Supports
+    type: checkbox
+    required: false
+    default: false
+    description: "Nicht unterstützte Record-Typen ignorieren"

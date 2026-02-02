@@ -1,0 +1,81 @@
+# NetBox DNS Provider Schema
+# https://github.com/octodns/octodns-netbox-dns
+
+name: NetBox DNS
+class: octodns_netbox_dns.NetBoxDNSProvider
+is_source: true
+documentation: https://github.com/octodns/octodns-netbox-dns
+
+package:
+  name: octodns-netbox-dns
+
+fields:
+  - name: url
+    label: NetBox URL
+    type: text
+    required: true
+    env_ref: true
+    placeholder: env/NETBOX_URL
+
+  - name: token
+    label: API Token
+    type: password
+    required: true
+    env_ref: true
+    placeholder: env/NETBOX_TOKEN
+
+  - name: view
+    label: DNS View
+    type: text
+    required: false
+    placeholder: "internal, public oder null"
+    description: "Filter by zone view. 'null' = kein Filter"
+
+  - name: replace_duplicates
+    label: Replace Duplicates
+    type: checkbox
+    required: false
+    default: false
+    description: "Erlaubt Provider, Einträge vom vorherigen zu überschreiben"
+
+  - name: make_absolute
+    label: Make Absolute
+    type: checkbox
+    required: false
+    default: false
+    description: "CNAME, MX, SRV Records absolut machen (trailing dot)"
+
+  - name: disable_ptr
+    label: Disable PTR
+    type: checkbox
+    required: false
+    default: true
+    description: "Automatische PTR-Record-Erstellung deaktivieren"
+
+  - name: insecure_request
+    label: Insecure Request
+    type: checkbox
+    required: false
+    default: false
+    description: "TLS-Zertifikat nicht verifizieren"
+
+  - name: zone_status_filter
+    label: Zone Status Filter
+    type: text
+    required: false
+    default: active
+    description: "Nur Zones mit diesem Status einbeziehen"
+
+  - name: record_status_filter
+    label: Record Status Filter
+    type: text
+    required: false
+    default: active
+    description: "Nur Records mit diesem Status einbeziehen"
+
+  - name: max_page_size
+    label: Max Page Size
+    type: number
+    required: false
+    default: 0
+    description: "0 = alle Items anzeigen"

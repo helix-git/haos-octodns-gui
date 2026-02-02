@@ -3,10 +3,14 @@
 bashio::log.info "Starting OctoDNS GUI Add-on..."
 
 # Read configuration
-DNS_PROVIDER=$(bashio::config 'dns_provider')
 ZONE_FILE_PATH=$(bashio::config 'zone_file_path')
 
-bashio::log.info "DNS Provider: ${DNS_PROVIDER:-not configured}"
+# Log enabled providers
+bashio::log.info "Enabled providers:"
+for provider in $(bashio::config 'enabled_providers'); do
+    bashio::log.info "  - ${provider}"
+done
+
 bashio::log.info "Zone File Path: ${ZONE_FILE_PATH}"
 
 # Create zone directory if it doesn't exist
@@ -16,7 +20,6 @@ if [ ! -d "$ZONE_FILE_PATH" ]; then
 fi
 
 # Export config as environment variables for the app
-export DNS_PROVIDER
 export ZONE_FILE_PATH
 
 # Check if SUPERVISOR_TOKEN is present

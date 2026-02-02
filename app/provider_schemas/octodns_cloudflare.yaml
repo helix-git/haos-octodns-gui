@@ -1,0 +1,47 @@
+# Cloudflare Provider Schema
+# https://github.com/octodns/octodns-cloudflare
+
+name: Cloudflare
+class: octodns_cloudflare.CloudflareProvider
+is_source: false
+documentation: https://github.com/octodns/octodns-cloudflare
+
+package:
+  name: octodns-cloudflare
+
+fields:
+  - name: token
+    label: API Token
+    type: password
+    required: true
+    env_ref: true
+    placeholder: env/CLOUDFLARE_TOKEN
+    description: "Cloudflare API Token mit DNS-Berechtigungen"
+
+  - name: account_id
+    label: Account ID
+    type: text
+    required: false
+    env_ref: true
+    placeholder: env/CLOUDFLARE_ACCOUNT_ID
+    description: "Optional: Account ID für Account-Level Token"
+
+  - name: zones
+    label: Zone IDs
+    type: text
+    required: false
+    description: "Optional: Komma-separierte Zone IDs"
+
+  - name: strict_supports
+    label: Strict Supports
+    type: checkbox
+    required: false
+    default: false
+    description: "Nicht unterstützte Record-Typen ignorieren"
+
+  - name: pagerules
+    label: Page Rules
+    type: checkbox
+    required: false
+    default: false
+    description: "Page Rules synchronisieren"

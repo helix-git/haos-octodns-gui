@@ -1,0 +1,47 @@
+# Pi-hole Provider Schema
+# https://github.com/jvoss/octodns-pihole
+
+name: Pi-hole
+class: octodns_pihole.PiholeProvider
+is_source: false
+documentation: https://github.com/jvoss/octodns-pihole
+
+package:
+  git: https://github.com/jvoss/octodns-pihole.git
+
+fields:
+  - name: url
+    label: Pi-hole URL
+    type: text
+    required: true
+    placeholder: "https://192.168.0.53:443"
+    description: "URL zur Pi-hole Admin-Oberfläche"
+
+  - name: password
+    label: Admin Passwort
+    type: password
+    required: true
+    env_ref: true
+    placeholder: env/PIHOLE_PASSWORD
+
+  - name: totp
+    label: TOTP Secret (2FA)
+    type: password
+    required: false
+    env_ref: true
+    placeholder: env/PIHOLE_TOTP
+    description: "Erforderlich wenn 2FA aktiviert ist"
+
+  - name: tls_verify
+    label: TLS verifizieren
+    type: checkbox
+    required: false
+    default: true
+    description: "TLS-Zertifikat verifizieren"
+
+  - name: strict_supports
+    label: Strict Supports
+    type: checkbox
+    required: false
+    default: false
+    description: "Nicht unterstützte Record-Typen ignorieren"
