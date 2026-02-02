@@ -22,10 +22,5 @@ options:
   zone_file_path: "/config/octodns"
 schema:
   enabled_providers:
-    - cloudflare?
-    - ovh?
-    - pihole?
-    - netbox-dns?
-    - netbox?
-    - bind?
+    - "list(cloudflare|ovh|pihole|netbox-dns|netbox|bind)?"
   zone_file_path: str
