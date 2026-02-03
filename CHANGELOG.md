@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/helix-git/haos-octodns-gui/compare/v0.3.0...v0.4.0) (2026-02-03)
+
+
+### Features
+
+* Add provider and secrets management with SQLite database ([cdc4a00](https://github.com/helix-git/haos-octodns-gui/commit/cdc4a00b559c7c79a36a3f61209de92eefb34d4c))
+
 ## [0.3.0](https://github.com/helix-git/haos-octodns-gui/compare/v0.2.1...v0.3.0) (2026-02-02)
 
 
